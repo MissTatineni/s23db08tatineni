@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  p Hey there #{title}
+  p How are you?
+  button(type="button",class="btn btn-primary", onclick="goFaster()", style="background-color:aqua; color:black;") Press Me
+  p
+  div#faster Increase the speed
+  script.
+   let mph = 20;
+   let change = 1;
+   function goFaster(){
+    mph += change;
+    change += 1;
+    document.getElementById(`faster`).textContent =`MPH ${mph} with change ${change}`;
+   }
+
+   a(href='/sweets') View Sweets Results

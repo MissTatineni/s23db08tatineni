@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+
+  -
+    let results = [
+      { name: 'Burfi', price: 32.50, quantity: 2 },
+      { name: 'PistaRoll', price: 5.0, quantity: 3 },
+      { name: 'Jamun', price: 2.0, quantity: 5 }
+    ]
+
+  .container-fluid
+  .row
+    each result, index in results
+      .col-sm-2
+        h2= result.name
+        p= `Price: $${result.price.toFixed(2)}`
+        p= `Quantity: ${result.quantity}`
+        div(
+          onclick=`buy(${index})`
+        ) Purchase
+
+  script.
+    function buy(index) {
+      alert(`You purchased item ${index}.`);
+    }
