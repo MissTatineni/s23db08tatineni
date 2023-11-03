@@ -1,11 +1,5 @@
-# f23wb08tatineni
-Assignment 10
+# s23wb08tatineni
+Assignment 11
 
-Repository for assignment 10
+Repository for assignment 11
 Hosted at [render](https://f23wb08tatineni.onrender.com/)
-
-**Class Sweets**
-***Attributes***
-name(string)
-price(float)
-quantity(integer)
