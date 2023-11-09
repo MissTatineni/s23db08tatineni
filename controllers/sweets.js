@@ -37,7 +37,7 @@ exports.sweets_list = async function(req, res) {
 exports.sweets_view_all_Page = async function(req, res) {
  try{
  thesweets = await sweets.find();
- res.render('sweets', { title: 'sweets Search Results', output: thesweets });
+ res.render('sweets', { title: 'sweets Search Results', results: thesweets });
  }
  catch(err){
  res.status(500);

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const sweetSchema = mongoose.Schema({
-sweet_type: String,
+sweets_type: String,
 size: String,
 cost: Number
 })
