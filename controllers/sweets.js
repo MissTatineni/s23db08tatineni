@@ -1,23 +1,8 @@
 var sweets = require('../models/sweets');
-// List of all sweets
-exports.sweets_list = function(req, res) {
- res.send('NOT IMPLEMENTED: sweets list');
-};
-// for a specific sweets.
-exports.sweets_detail = function(req, res) {
- res.send('NOT IMPLEMENTED: sweets detail: ' + req.params.id);
-};
-// Handle sweets create on POST.
-exports.sweets_create_post = function(req, res) {
- res.send('NOT IMPLEMENTED: sweets create POST');
-};
+
 // Handle sweets delete form on DELETE.
 exports.sweets_delete = function(req, res) {
  res.send('NOT IMPLEMENTED: sweets delete DELETE ' + req.params.id);
-};
-// Handle sweets update form on PUT.
-exports.sweets_update_put = function(req, res) {
- res.send('NOT IMPLEMENTED: sweets update PUT' + req.params.id);
 };
 
 // List of all sweets
@@ -52,10 +37,10 @@ exports.sweets_create_post = async function(req, res) {
     // We are looking for a body, since POST does not have query parameters.
     // Even though bodies can be in many different formats, we will be picky
     // and require that it be a json object
-    // {"sweets_type":"goat", "cost":12, "size":"large"}
-    document.sweets_type = req.body.sweets_type;
-    document.cost = req.body.cost;
-    document.size = req.body.size;
+    // {"name":"goat", "price":12, "quantity":"large"}
+    document.name = req.body.name;
+    document.price = req.body.price;
+    document.quantity = req.body.quantity;
     try{
     let result = await document.save();
     res.send(result);
@@ -65,4 +50,38 @@ exports.sweets_create_post = async function(req, res) {
     res.send(`{"error": ${err}}`);
     } 
    }
+
+   // for a specific sweet.
+   exports.sweets_detail = async function(req, res) {
+   console.log("detail" + req.params.id)
+   try {
+   result = await sweets.findById( req.params.id)
+   res.send(result)
+   } catch (error) {
+   res.status(500)
+   res.send(`{"error": document for id ${req.params.id} not found`);
+   }
+   };
+
+   //Handle sweets update form on PUT.
+   exports.sweets_update_put = async function(req, res) {
+   console.log(`update on id ${req.params.id} with body
+   ${JSON.stringify(req.body)}`)
+   try {
+   let toUpdate = await sweets.findById( req.params.id)
+   // Do updates of properties
+   if(req.body.name)
+   toUpdate.name = req.body.name;
+   if(req.body.price) toUpdate.price = req.body.price;
+   if(req.body.quantity) toUpdate.quantity = req.body.quantity;
+   let result = await toUpdate.save();
+   console.log("Success " + result)
+   res.send(result)
+   } catch (err) {
+   res.status(500)
+   res.send(`{"error": ${err}: Update for id ${req.params.id}
+   failed`);
+   }
+   }
+   
    

@@ -60,27 +60,27 @@ async function recreateDB(){
  // Delete everything
  await sweet.deleteMany();
 
- let instance1 = new sweet( {sweet_type:"Burfi",
-                               size:'2', 
-                               cost:32.50});
+ let instance1 = new sweet( {name:"Burfi",
+                               quantity:2, 
+                               price:32.50});
  instance1.save().then(doc=>{
  console.log("First object saved")}
  ).catch(err=>{
  console.error(err)
  });
 
-let instance2 = new sweet( {sweet_type:"Pista Roll",
-                               size:'3', 
-                               cost:5.0});
+let instance2 = new sweet( {name:"Pista Roll",
+                               quantity:3, 
+                               price:5.0});
  instance2.save().then(doc=>{
  console.log("Second object saved")}
  ).catch(err=>{
  console.error(err)
  });
 
- let instance3 = new sweet( {sweet_type:"Jamun",
- size:'5', 
- cost:2.0});
+ let instance3 = new sweet( {name:"Jamun",
+ quantity:5, 
+ price:2.0});
 instance3.save().then(doc=>{
 console.log("Third object saved")}
 ).catch(err=>{
