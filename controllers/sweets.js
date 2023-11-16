@@ -1,9 +1,17 @@
 var sweets = require('../models/sweets');
 
-// Handle sweets delete form on DELETE.
-exports.sweets_delete = function(req, res) {
- res.send('NOT IMPLEMENTED: sweets delete DELETE ' + req.params.id);
-};
+// Handle sweets delete on DELETE.
+exports.sweets_delete = async function(req, res) {
+    console.log("delete " + req.params.id)
+    try {
+    result = await sweets.findByIdAndDelete( req.params.id)
+    console.log("Removed " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": Error deleting ${err}}`);
+    }
+    };
 
 // List of all sweets
 exports.sweets_list = async function(req, res) {
@@ -83,5 +91,59 @@ exports.sweets_create_post = async function(req, res) {
    failed`);
    }
    }
+
+   //Handle a show one view with id specified by query
+   exports.sweets_view_one_Page = async function(req, res) {
+   console.log("single view for id " + req.query.id)
+   try{
+   result = await sweets.findById( req.query.id)
+   res.render('sweetsdetail',
+   { title: 'Sweets Detail', toShow: result });
+   }
+   catch(err){
+   res.status(500)
+   res.send(`{'error': '${err}'}`);
+   }
+   };
    
+// Handle building the view for creating a sweets.
+// No body, no in path parameter, no query.
+// Does not need to be async
+exports.sweets_create_Page = function(req, res) {
+console.log("create view")
+try{
+res.render('sweetscreate', { title: 'Sweets Create'});
+}
+catch(err){
+res.status(500)
+res.send(`{'error': '${err}'}`);
+}
+};
+
+// Handle building the view for updating a sweets.
+// query provides the id
+exports.sweets_update_Page = async function(req, res) {
+console.log("update view for item "+req.query.id)
+try{
+let result = await sweets.findById(req.query.id)
+res.render('sweetsupdate', { title: 'Sweets Update', toShow: result });
+}
+catch(err){
+res.status(500)
+res.send(`{'error': '${err}'}`);
+}
+};
    
+// Handle a delete one view with id from query
+exports.sweets_delete_Page = async function(req, res) {
+    console.log("Delete view for id " + req.query.id)
+    try{
+    result = await sweets.findById(req.query.id)
+    res.render('sweetsdelete', { title: 'sweets Delete', toShow:
+    result });
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+    };

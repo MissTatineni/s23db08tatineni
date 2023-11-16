@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  h1= title
+  - let sweetsid = toShow._id
+  - let sweet_name = toShow.name
+  - let sweet_price = toShow.price
+  - let sweet_quantity= toShow.quantity
+
+  div.row(class='mb-2')
+    div.mr-1 ID is
+    div #{sweetsid}
+    - let actionid = "/resource/sweets/" + sweetsid
+    form(id='sweetsForm', action=actionid, method="PUT")
+      div.form-group
+        label.sweetsAttr(for='sweet_name') sweets name
+        input#sweet_name(type='text', name='sweet_name', value=sweet_name)
+      div.form-group
+        label.sweetsAttr(for='sweet_price') sweets price
+        input#sweet_price(type='number', name='sweet_price', value=sweet_price)
+      div.form-group
+        label.sweetsAttr(for='sweet_quantity') sweets Quantity
+        input#sweet_quantity(type='number', name='sweet_quantity', value=sweet_quantity)
+      input(type="submit")
+    script.
+      document.forms['sweetsForm'].addEventListener('submit', (event) => {
+        event.preventDefault();
+        // TODO do something here to show the user that the form is being submitted
+        fetch(event.target.action, {
+          method: 'PUT',
+          body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+        }).then((resp) => {
+          return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+          alert("Update succeeded");
+          // TODO handle body
+        }).catch((error) => {
+          // TODO handle error
+          alert("Update failed " + error);
+        });
+      });

@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1= title
+  - let sweetsid = toShow._id
+  - let sweets_name = toShow.name
+  - let sweetscost = toShow.price
+  - let sweetsquantity = toShow.quantity
+
+  div
+    div.row
+      div(class='sweetsAttr mr-3') sweet ID is:
+        div #{sweetsid}
+        br
+    div.row
+      div(class='sweetsAttr mr-3') sweet name is:
+        div #{sweets_name}
+        br
+    div.row
+      div(class='sweetsAttr mr-3') sweet cost is:
+        div #{sweetscost}
+        br
+    div.row
+      div(class='sweetsAttr mr-3') sweet quantity is:
+        div #{sweetsquantity}
