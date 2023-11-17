@@ -2,26 +2,28 @@ extends layout
 
 block content
   h1= title
-
-  -
-    let results = [
-      { name: 'Burfi', price: 32.50, quantity: 2 },
-      { name: 'PistaRoll', price: 5.0, quantity: 3 },
-      { name: 'Jamun', price: 2.0, quantity: 5 }
-    ]
+  
+  - let result = results;
+  - let sweets = [{ name: 'Burfi', price: 32.50, quantity: 2 },{ name: 'PistaRoll', price: 5.0, quantity: 3 },{ name: 'Jamun', price: 2.0, quantity: 5 }]
 
   .container-fluid
-  .row
-    each result, index in results
+  .row.m-1 
+    each result, index in sweets
       .col-sm-2
+        - let destination = `/sweets/update?id=${result._id }`
         h2= result.name
-        p= `Price: $${result.price.toFixed(2)}`
+        p= `Price: ${result.price.toFixed(2)}`
         p= `Quantity: ${result.quantity}`
         div(
           onclick=`buy(${index})`
         ) Purchase
+        button.btn(class="btn-primary ml-1", onclick=`dispatch('${destination}')`) Update
 
   script.
     function buy(index) {
       alert(`You purchased item ${index}.`);
+    }
+
+    function dispatch(path){
+      window.location.href = path;
     }
