@@ -5,7 +5,7 @@ block content
   - let sweetsid = toShow._id
   - let sweet_name = toShow.name
   - let sweet_price = toShow.price
-  - let sweet_quantity= toShow.quantity
+  - let sweet_quantity = toShow.quantity
 
   div.row(class='mb-2')
     div.mr-1 ID is
@@ -14,28 +14,49 @@ block content
     form(id='sweetsForm', action=actionid, method="PUT")
       div.form-group
         label.sweetsAttr(for='sweet_name') sweets name
-        input#sweet_name(type='text', name='sweet_name', value=sweet_name)
+        input#sweet_name(type='text', name='sweet_name', value=sweet_name, required)
       div.form-group
         label.sweetsAttr(for='sweet_price') sweets price
-        input#sweet_price(type='number', name='sweet_price', value=sweet_price)
+        input#sweet_price(type='number', name='sweet_price', value=sweet_price, required)
       div.form-group
         label.sweetsAttr(for='sweet_quantity') sweets Quantity
-        input#sweet_quantity(type='number', name='sweet_quantity', value=sweet_quantity)
+        input#sweet_quantity(type='number', name='sweet_quantity', value=sweet_quantity, required)
       input(type="submit")
     script.
-      document.forms['sweetsForm'].addEventListener('submit', (event) => {
+      document.forms['sweetsForm'].addEventListener('submit', async (event) => {
         event.preventDefault();
-        // TODO do something here to show the user that the form is being submitted
-        fetch(event.target.action, {
-          method: 'PUT',
-          body: new URLSearchParams(new FormData(event.target)) // event.target is the form
-        }).then((resp) => {
-          return resp.json(); // or resp.text() or whatever the server sends
-        }).then((body) => {
+
+        // Validate sweet_price before submitting the form
+        const sweetPriceInput = document.getElementById('sweet_price');
+        const sweetPriceValue = parseFloat(sweetPriceInput.value);
+
+        // validation condition, checking if the price is not negative
+        if (sweetPriceValue < 0) {
+          alert("Please enter a valid sweets price greater than or equal to 0");
+          return;
+        }
+
+        // Validate sweet_name not containing numbers
+        const sweetNameInput = document.getElementById('sweet_name');
+        const sweetNameValue = sweetNameInput.value;
+
+        if (/\d/.test(sweetNameValue)) {
+          alert("Sweets name should not contain numbers");
+          return;
+        }
+
+        try {
+
+          const response = await fetch(event.target.action, {
+            method: 'PUT',
+            body: new URLSearchParams(new FormData(event.target)),
+          });
+
+          const body = await response.json();
           alert("Update succeeded");
           // TODO handle body
-        }).catch((error) => {
+        } catch (error) {
           // TODO handle error
           alert("Update failed " + error);
-        });
+        }
       });

@@ -1,23 +1,37 @@
 extends layout
 
 block content
-  h1= title
+  
   
   - let result = results;
   - let sweets = [{ name: 'Burfi', price: 32.50, quantity: 2 },{ name: 'PistaRoll', price: 5.0, quantity: 3 },{ name: 'Jamun', price: 2.0, quantity: 5 }]
 
   .container-fluid
-  .row.m-1 
-    each result, index in sweets
-      .col-sm-2
-        - let destination = `/sweets/update?id=${result._id }`
-        h2= result.name
-        p= `Price: ${result.price.toFixed(2)}`
-        p= `Quantity: ${result.quantity}`
-        div(
-          onclick=`buy(${index})`
-        ) Purchase
-        button.btn(class="btn-primary ml-1", onclick=`dispatch('${destination}')`) Update
+    // Add the "Create" button at the top
+    button.btn(class="btn-success", onclick="dispatch('/create')") Click here to Create
+    br
+    br
+    h1= title
+    .row.m-1 
+      each result, index in sweets
+        .col-sm-2
+          - let destination = `dispatch("/sweets/update?id=${result._id}")`
+          h2= result.name
+          p= `Price: ${result.price.toFixed(2)}`
+          p= `Quantity: ${result.quantity}`
+          div(
+            onclick=`buy(${index})`
+          ) Purchase
+          button.btn(class="btn-primary ml-1", onclick=destination) Update
+          br
+          br
+          br
+          button.btn(class="btn-info ml-1", onclick=`dispatch('/sweets/detail?id=${result._id}')`) Details
+          br
+          br
+          br
+          button.btn(class="btn-danger ml-1", onclick=`dispatch('/sweets/delete?id=${result._id}')`) Delete
+
 
   script.
     function buy(index) {
